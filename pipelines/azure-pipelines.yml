@@ -6,7 +6,7 @@ pr: none
 variables:
   ACR.Name: 'realworld'
   ACR.ServiceConnnection: 'realworld-registry'
-  Azure.ServiceConnection: 'codecampster-nebbia-partner'
+  Azure.ServiceConnection: 'nebbia-partner-service-connection'
 
 stages:
 - stage: build
