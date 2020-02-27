@@ -59,7 +59,7 @@ stages:
     - bash: |
         echo "Here is an artifact!" > artifact.txt
 
-        oras push myregistry.azurecr.io/samples/artifact:1.0 \
+        oras push $(ACR.Name).azurecr.io/samples/artifact:1.0 \
           --manifest-config /dev/null:application/vnd.unknown.config.v1+json \
           ./artifact.txt:application/vnd.unknown.layer.v1+txt
       displayName: "Uploading dummy artifact"
