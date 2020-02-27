@@ -31,7 +31,7 @@ stages:
           $(Build.BuildNumber)
           latest
   - job: job_helm
-    depends_on: null
+    dependsOn: null
     displayName: Helm Publish
     pool:
       image: 'ubuntu-latest'
