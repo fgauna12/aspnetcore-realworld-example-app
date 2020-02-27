@@ -43,6 +43,8 @@ stages:
         tar -zxf oras_0.8.1_*.tar.gz -C oras-install/
         mv oras-install/oras /usr/local/bin/
         rm -rf oras_0.8.1_*.tar.gz oras-install/
+
+        oras
       displayName: "Install Oras"
     - task: AzureCLI@2
       displayName: Login to ACR
