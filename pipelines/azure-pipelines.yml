@@ -4,6 +4,7 @@ trigger:
 pr: none
 
 variables:
+  ACR.Name: 'realworld'
   ACR.ServiceConnnection: 'realworld-registry'
   Azure.ServiceConnection: 'codecampster-nebbia-partner'
 
@@ -43,3 +44,20 @@ stages:
         mv oras-install/oras /usr/local/bin/
         rm -rf oras_0.8.1_*.tar.gz oras-install/
       displayName: "Install Oras"
+    - task: AzureCLI@2
+      displayName: Login to ACR
+      inputs:
+        azureSubscription: "$(Azure.ServiceConnection)"
+        scriptType: bash
+        scriptLocation: inlineScript
+        inlineScript: |
+            az --version
+            az acr login --name $(ACR.Name)
+    - bash: |
+        echo "Here is an artifact!" > artifact.txt
+
+        oras push myregistry.azurecr.io/samples/artifact:1.0 \
+          --manifest-config /dev/null:application/vnd.unknown.config.v1+json \
+          ./artifact.txt:application/vnd.unknown.layer.v1+txt
+      displayName: "Uploading dummy artifact"
+        
