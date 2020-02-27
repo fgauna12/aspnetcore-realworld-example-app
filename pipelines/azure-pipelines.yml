@@ -4,7 +4,7 @@ trigger:
 pr: none
 
 variables:
-  ACR.ServiceConnnection: 'codecampster-nebbia-registry'
+  ACR.ServiceConnnection: 'codecampster-realworld-registry'
   Azure.ServiceConnection: 'codecampster-nebbia-partner'
 
 stages:
