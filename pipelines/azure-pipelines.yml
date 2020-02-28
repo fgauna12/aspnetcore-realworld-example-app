@@ -51,5 +51,8 @@ stages:
             az acr login --name $(ACR.Name)
     - bash: |
         helm chart save ./k8s/realworld-backend/ $(ACR.Name).azurecr.io/charts/realworld-backend:$(Build.BuildNumber)
-      displayName: "Uploading Helm Chart to Azure Container Registry"
+      displayName: "Saving & Tagging Helm Chart"
+    - bash: |
+        helm chart push $(ACR.Name).azurecr.io/charts/realworld-backend:$(Build.BuildNumber)
+      displayName: "Pushing Helm Chart to Azure Container Registry"
         
