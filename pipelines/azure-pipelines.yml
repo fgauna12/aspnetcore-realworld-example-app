@@ -8,6 +8,7 @@ variables:
   ACR.ServiceConnnection: 'realworld-registry'
   Azure.ServiceConnection: 'nebbia-partner-service-connection'
   HELM_EXPERIMENTAL_OCI: 1
+  System.Debug: true
 
 stages:
 - stage: build
