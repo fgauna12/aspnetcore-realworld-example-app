@@ -51,6 +51,13 @@ stages:
           helm chart save ./k8s/realworld-backend/ $(ACR.Name).azurecr.io/charts/realworld-backend:latest
           # helm chart push $(ACR.Name).azurecr.io/charts/realworld-backend:latest
     - bash: |
+        set -e
+        curl -LO https://github.com/deislabs/oras/releases/download/v0.8.1/oras_0.8.1_linux_amd64.tar.gz
+        mkdir -p oras-install/
+        tar -zxf oras_0.8.1_*.tar.gz -C oras-install/
+        sudo mv oras-install/oras /usr/local/bin/
+        sudo rm -rf oras_0.8.1_*.tar.gz oras-install/
+        
         echo "Here is an artifact!" > artifact.txt
 
         oras push $(ACR.Name).azurecr.io/samples/artifact:1.0 \
