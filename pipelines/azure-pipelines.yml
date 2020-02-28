@@ -52,5 +52,6 @@ stages:
         scriptLocation: inlineScript
         inlineScript: |
           az acr login --name $(ACR.Name)
+          helm chart save ./k8s/realworld-backend/ $(ACR.Name).azurecr.io/charts/realworld-backend:$(Build.BuildNumber)
           helm chart push $(ACR.Name).azurecr.io/charts/realworld-backend:$(Build.BuildNumber)
         
