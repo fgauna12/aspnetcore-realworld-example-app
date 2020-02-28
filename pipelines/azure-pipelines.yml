@@ -7,6 +7,7 @@ variables:
   ACR.Name: 'realworld'
   ACR.ServiceConnnection: 'realworld-registry'
   Azure.ServiceConnection: 'nebbia-partner-service-connection'
+  HELM_EXPERIMENTAL_OCI: 1
 
 stages:
 - stage: build
@@ -44,8 +45,6 @@ stages:
         tar -zxf oras_0.8.1_*.tar.gz -C oras-install/
         sudo mv oras-install/oras /usr/local/bin/
         sudo rm -rf oras_0.8.1_*.tar.gz oras-install/
-
-        oras
       displayName: "Install Oras"
     - task: AzureCLI@2
       displayName: Login to ACR
@@ -54,12 +53,9 @@ stages:
         scriptType: bash
         scriptLocation: inlineScript
         inlineScript: |
-            az --version
             az acr login --name $(ACR.Name)
     - bash: |
-        echo "Here is an artifact!" > artifact.txt
-
-        oras push $(ACR.Name).azurecr.io/samples/artifact:1.0 \
+        oras push $(ACR.Name).azurecr.io/realworld/artifact:1.0 \
           --manifest-config /dev/null:application/vnd.unknown.config.v1+json \
           ./artifact.txt:application/vnd.unknown.layer.v1+txt
       displayName: "Uploading dummy artifact"
