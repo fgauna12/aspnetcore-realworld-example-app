@@ -7,6 +7,7 @@ variables:
   ACR.Name: 'realworld'
   ACR.ServiceConnnection: 'realworld-registry'
   Azure.ServiceConnection: 'nebbia-partner-service-connection'
+  HELM_EXPERIMENTAL_OCI: 1
 
 stages:
 - stage: build
@@ -40,9 +41,6 @@ stages:
     - task: HelmInstaller@1
       inputs:
         helmVersionToInstall: 'latest'
-    - bash: |
-        helm chart save ./k8s/realworld-backend/ $(ACR.Name).azurecr.io/charts/realworld-backend:$(Build.BuildNumber)
-      displayName: "Saving & Tagging Helm Chart"
     - task: AzureCLI@2
       displayName: Pushing Helm Chart to Azure Container Registry
       inputs:
@@ -51,6 +49,6 @@ stages:
         scriptLocation: inlineScript
         inlineScript: |
           az acr login --name $(ACR.Name)
-          helm chart save ./k8s/realworld-backend/ $(ACR.Name).azurecr.io/charts/realworld-backend:$(Build.BuildNumber)
-          helm chart push $(ACR.Name).azurecr.io/charts/realworld-backend:$(Build.BuildNumber)
+          helm chart save ./k8s/realworld-backend/ $(ACR.Name).azurecr.io/charts/realworld-backend:latest
+          helm chart push $(ACR.Name).azurecr.io/charts/realworld-backend:latest
         
