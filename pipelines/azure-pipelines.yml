@@ -49,5 +49,12 @@ stages:
         inlineScript: |
           az acr login --name $(ACR.Name)
           helm chart save ./k8s/realworld-backend/ $(ACR.Name).azurecr.io/charts/realworld-backend:latest
-          helm chart push $(ACR.Name).azurecr.io/charts/realworld-backend:latest
+          # helm chart push $(ACR.Name).azurecr.io/charts/realworld-backend:latest
+    - bash: |
+        echo "Here is an artifact!" > artifact.txt
+
+        oras push $(ACR.Name).azurecr.io/samples/artifact:1.0 \
+          --manifest-config /dev/null:application/vnd.unknown.config.v1+json \
+          ./artifact.txt:application/vnd.unknown.layer.v1+txt
+      displayName: "Uploading dummy artifact"
         
