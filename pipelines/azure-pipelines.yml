@@ -69,4 +69,4 @@ stages:
         inlineScript: |
           az acr login --name $(ACR.Name)
           helm chart save ./k8s/realworld-backend/ $(ACR.Name).azurecr.io/charts/realworld-backend:latest --debug
-          helm chart push $(ACR.Name).azurecr.io/charts/realworld-backend:latest
+          helm chart push $(ACR.Name).azurecr.io/charts/realworld-backend:latest --debug
