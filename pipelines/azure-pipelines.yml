@@ -37,19 +37,14 @@ stages:
     pool:
       image: 'ubuntu-latest'
     steps:
-    - task: HelmInstaller@1
-      inputs:
-        helmVersionToInstall: 'latest'
     - task: AzureCLI@2
-      displayName: Pushing Helm Chart to Azure Container Registry
+      displayName: Login to Azure Container Registry
       inputs:
         azureSubscription: "$(Azure.ServiceConnection)"
         scriptType: bash
         scriptLocation: inlineScript
         inlineScript: |
           az acr login --name $(ACR.Name)
-          helm chart save ./k8s/realworld-backend/ $(ACR.Name).azurecr.io/charts/realworld-backend:latest
-          # helm chart push $(ACR.Name).azurecr.io/charts/realworld-backend:latest
     - bash: |
         set -e
         curl -LO https://github.com/deislabs/oras/releases/download/v0.8.1/oras_0.8.1_linux_amd64.tar.gz
@@ -64,4 +59,15 @@ stages:
           --manifest-config /dev/null:application/vnd.unknown.config.v1+json \
           ./artifact.txt:application/vnd.unknown.layer.v1+txt
       displayName: "Uploading dummy artifact"
-        
+    - task: HelmInstaller@1
+      inputs:
+        helmVersionToInstall: 'latest'
+    - task: AzureCLI@2
+      displayName: Pushing Helm Chart to Azure Container Registry
+      inputs:
+        azureSubscription: "$(Azure.ServiceConnection)"
+        scriptType: bash
+        scriptLocation: inlineScript
+        inlineScript: |
+          helm chart save ./k8s/realworld-backend/ $(ACR.Name).azurecr.io/charts/realworld-backend:latest
+          helm chart push $(ACR.Name).azurecr.io/charts/realworld-backend:latest
