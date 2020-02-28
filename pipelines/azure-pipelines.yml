@@ -16,7 +16,7 @@ stages:
   - job: job_build
     displayName: Build and Push
     pool:
-      image: 'ubuntu-latest'
+      vmImage: 'ubuntu-latest'
     variables: 
       App.Dockerfile: Dockerfile
     steps:
@@ -35,7 +35,7 @@ stages:
     dependsOn: []
     displayName: Helm Publish
     pool:
-      image: 'windows-latest'
+      vmImage: 'windows-latest'
     steps:
     - task: AzureCLI@2
       inputs:
@@ -54,7 +54,7 @@ stages:
     dependsOn: []
     displayName: Helm Publish
     pool:
-      image: 'ubuntu-latest'
+      vmImage: 'ubuntu-latest'
     steps:
     - task: AzureCLI@2
       displayName: Login to Azure Container Registry
