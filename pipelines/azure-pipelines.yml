@@ -38,17 +38,11 @@ stages:
       image: 'windows-latest'
     steps:
     - task: AzureCLI@2
-      displayName: Login to Azure Container Registry
       inputs:
-        azureSubscription: "$(Azure.ServiceConnection)"
-        scriptType: ps
-        scriptLocation: inlineScript
-        inlineScript: |
-          az acr login --name $(ACR.Name)
-    - task: ChocolateyCommand@0
-      inputs:
-        command: 'install'
-        installPackageId: 'kubernetes-helm'
+        azureSubscription: 'nebbia-partner-service-connection'
+        scriptType: 'ps'
+        scriptLocation: 'inlineScript'
+        inlineScript: 'az acr login --name $(ACR.Name)'    
     - task: ChocolateyCommand@0
       inputs:
         command: 'install'
