@@ -61,7 +61,7 @@ stages:
       displayName: "Uploading dummy artifact"
     - task: HelmInstaller@1
       inputs:
-        helmVersionToInstall: 'latest'
+        helmVersionToInstall: 'v3.1.0'
     - task: AzureCLI@2
       displayName: Pushing Helm Chart to Azure Container Registry
       inputs:
