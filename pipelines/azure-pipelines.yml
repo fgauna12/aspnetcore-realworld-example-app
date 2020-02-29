@@ -62,7 +62,7 @@ stages:
         helmVersionToInstall: 'latest'
     - bash: |
         helm package k8s/realworld-backend/ --app-version $(Build.BuildNumber)
-        mv $(Chart.Name)-$(Build.BuildNumber).tgz $(Build.ArtifactStagingDirectory)/
+        mv realworld-backend-$(Build.BuildNumber).tgz $(Build.ArtifactStagingDirectory)/
     # - task: HelmDeploy@0
     #   displayName: 'Package Helm Charts'
     #   inputs:
@@ -76,7 +76,7 @@ stages:
       inputs:
         azureSubscription: $(Azure.ServiceConnection)
         scriptLocation: inlineScript
-        inlineScript: 'az acr helm push -n $(ACR.Name) $(Build.ArtifactStagingDirectory)/$(Chart.Name)-$(Build.BuildNumber).tgz'
+        inlineScript: 'az acr helm push -n $(ACR.Name) $(Build.ArtifactStagingDirectory)/realworld-backend-$(Build.BuildNumber).tgz'
     # - bash: |
     #     docker login -u $DOCKERUSERNAME -p $DOCKERPASSWORD
     #     helm chart save ./k8s/realworld-backend/ realworld-backend:latest
