@@ -65,15 +65,13 @@ stages:
       inputs:
         connectionType: None
         command: package
-        chartPath: 'k8s/charts/$(Chart.Name)'
-        chartVersion: '$(Build.BuildId)'
+        chartPath: 'k8s/realworld-backend/'
+        chartVersion: '$(Build.BuildNumber)'
         destination: $(Build.ArtifactStagingDirectory)
-        updateDependency: true
-
     - task: AzureCLI@1
       displayName: 'Push helm chart'
       inputs:
-        azureSubscription: $(Azure.ServiceConnectionId)
+        azureSubscription: $(Azure.ServiceConnection)
         scriptLocation: inlineScript
         inlineScript: 'az acr helm push -n $(ACR.Name) $(Build.ArtifactStagingDirectory)/$(Chart.Name)-$(Build.BuildNumber).tgz'
     # - bash: |
