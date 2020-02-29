@@ -60,14 +60,18 @@ stages:
     - task: HelmInstaller@1
       inputs:
         helmVersionToInstall: 'latest'
-    - task: HelmDeploy@0
-      displayName: 'Package Helm Charts'
-      inputs:
-        connectionType: None
-        command: package
-        chartPath: 'k8s/realworld-backend/'
-        chartVersion: '$(Build.BuildNumber)'
-        destination: $(Build.ArtifactStagingDirectory)
+    - bash: |
+        helm package k8s/realworld-backend/ --app-version $(Build.BuildNumber)
+        ls -a
+        exit 1
+    # - task: HelmDeploy@0
+    #   displayName: 'Package Helm Charts'
+    #   inputs:
+    #     connectionType: None
+    #     command: package
+    #     chartPath: 'k8s/realworld-backend/'
+    #     chartVersion: '$(Build.BuildNumber)'
+    #     destination: $(Build.ArtifactStagingDirectory)
     - task: AzureCLI@1
       displayName: 'Push helm chart'
       inputs:
