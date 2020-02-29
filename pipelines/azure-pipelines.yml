@@ -32,25 +32,6 @@ stages:
         tags: |
           $(Build.BuildNumber)
           latest
-  - job: job_helm_windows
-    dependsOn: []
-    displayName: Helm Publish
-    pool:
-      vmImage: 'windows-latest'
-    steps:
-    - task: AzureCLI@2
-      inputs:
-        azureSubscription: 'nebbia-partner-service-connection'
-        scriptType: 'ps'
-        scriptLocation: 'inlineScript'
-        inlineScript: 'az acr login --name $(ACR.Name)'    
-    - task: ChocolateyCommand@0
-      inputs:
-        command: 'install'
-        installPackageId: 'kubernetes-helm'
-    - powershell: |
-        helm chart save .\k8s\realworld-backend\ $(ACR.Name).azurecr.io/charts/realworld-backend:latest --debug
-        helm chart push $(ACR.Name).azurecr.io/charts/realworld-backend:latest --debug
   - job: job_helm
     dependsOn: []
     displayName: Helm Publish
@@ -63,35 +44,9 @@ stages:
     - bash: |
         helm package k8s/realworld-backend/ --app-version $(Build.BuildNumber) --version $(Build.BuildNumber)
         mv realworld-backend-$(Build.BuildNumber).tgz $(Build.ArtifactStagingDirectory)/
-    # - task: HelmDeploy@0
-    #   displayName: 'Package Helm Charts'
-    #   inputs:
-    #     connectionType: None
-    #     command: package
-    #     chartPath: 'k8s/realworld-backend/'
-    #     chartVersion: '$(Build.BuildNumber)'
-    #     destination: $(Build.ArtifactStagingDirectory)
     - task: AzureCLI@1
       displayName: 'Push helm chart'
       inputs:
         azureSubscription: $(Azure.ServiceConnection)
         scriptLocation: inlineScript
         inlineScript: 'az acr helm push -n $(ACR.Name) $(Build.ArtifactStagingDirectory)/realworld-backend-$(Build.BuildNumber).tgz'
-    # - bash: |
-    #     docker login -u $DOCKERUSERNAME -p $DOCKERPASSWORD
-    #     helm chart save ./k8s/realworld-backend/ realworld-backend:latest
-    #     helm chart save ./k8s/realworld-backend/ $(ACR.Name).azurecr.io/charts/realworld-backend:latest
-    #     helm chart push $(ACR.Name).azurecr.io/charts/realworld-backend:latest --debug
-    #   env: 
-    #     DOCKERUSERNAME: $(DockerUsername)
-    #     DOCKERPASSWORD: $(DockerPassword)
-    # - task: AzureCLI@2
-    #   displayName: Login to Azure Container Registry
-    #   inputs:
-    #     azureSubscription: "$(Azure.ServiceConnection)"
-    #     scriptType: bash
-    #     scriptLocation: inlineScript
-    #     inlineScript: |
-    #       az acr login --name $(ACR.Name)
-    #       helm chart save ./k8s/realworld-backend/ $(ACR.Name).azurecr.io/charts/realworld-backend:latest --debug
-    #       helm chart push $(ACR.Name).azurecr.io/charts/realworld-backend:latest --debug
