@@ -62,8 +62,7 @@ stages:
         helmVersionToInstall: 'latest'
     - bash: |
         helm package k8s/realworld-backend/ --app-version $(Build.BuildNumber)
-        ls -a
-        exit 1
+        mv $(Chart.Name)-$(Build.BuildNumber).tgz $(Build.ArtifactStagingDirectory)/
     # - task: HelmDeploy@0
     #   displayName: 'Package Helm Charts'
     #   inputs:
