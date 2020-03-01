@@ -49,4 +49,4 @@ stages:
       inputs:
         azureSubscription: $(Azure.ServiceConnection)
         scriptLocation: inlineScript
-        inlineScript: 'az acr helm push -n $(ACR.Name) $(Build.ArtifactStagingDirectory)/realworld-backend-*.tgz'
+        inlineScript: 'az acr helm push -n $(ACR.Name) $(Build.ArtifactStagingDirectory)/realworld-backend-*.tgz --force'
