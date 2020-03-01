@@ -43,10 +43,10 @@ stages:
         helmVersionToInstall: 'latest'
     - bash: |
         helm package k8s/realworld-backend/ --app-version $(Build.BuildNumber)
-        mv realworld-backend-$(Build.BuildNumber).tgz $(Build.ArtifactStagingDirectory)/
+        mv realworld-backend-*.tgz $(Build.ArtifactStagingDirectory)/
     - task: AzureCLI@1
       displayName: 'Push helm chart'
       inputs:
         azureSubscription: $(Azure.ServiceConnection)
         scriptLocation: inlineScript
-        inlineScript: 'az acr helm push -n $(ACR.Name) $(Build.ArtifactStagingDirectory)/realworld-backend-$(Build.BuildNumber).tgz'
+        inlineScript: 'az acr helm push -n $(ACR.Name) $(Build.ArtifactStagingDirectory)/realworld-backend-*.tgz'
