@@ -30,7 +30,7 @@ stages:
         buildContext: .
         Dockerfile: $(App.Dockerfile)
         tags: |
-          $(Build.BuildNumber)
+          "stg-$(Build.SourceVersion)"
           latest
   - job: job_helm
     dependsOn: []
