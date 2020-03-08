@@ -18,6 +18,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.OpenApi.Models;
 
 namespace Conduit
@@ -118,6 +119,8 @@ namespace Conduit
             services.AddScoped<IProfileReader, ProfileReader>();
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
+            services.AddHealthChecks();
+
             services.AddJwt();
         }
 
@@ -133,6 +136,16 @@ namespace Conduit
                     .AllowAnyOrigin()
                     .AllowAnyHeader()
                     .AllowAnyMethod());
+            
+            app.UseHealthChecks("/health/ready", new HealthCheckOptions()
+            {
+                Predicate = (healthCheckRegistration => healthCheckRegistration.Tags.Contains("ready"))
+            });
+            
+            app.UseHealthChecks("/health/liveness", new HealthCheckOptions()
+            {
+                Predicate = (healthCheckRegistration => false)
+            });
 
             app.UseMvc();
 
