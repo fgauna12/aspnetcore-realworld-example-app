@@ -283,3 +283,5 @@ tools
 .env
 
 .DS_Store
+src/Conduit/mono_crash.mem.11962.1.blob
+src/Conduit/realworld.db
