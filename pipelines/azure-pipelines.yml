@@ -3,8 +3,8 @@ trigger:
     include:
     - master
   paths:
-    include:
-    - iac/*
+    exclude:
+    - k8s/*
 
 pr: none
 
