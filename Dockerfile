@@ -13,7 +13,7 @@ FROM mcr.microsoft.com/dotnet/core/runtime:3.1-alpine
 COPY --from=build /build/publish /app
 WORKDIR /app
 
-EXPOSE 5000
+EXPOSE 80
 
 RUN dotnet --list-runtimes
 ENTRYPOINT ["dotnet", "Conduit.dll"]
