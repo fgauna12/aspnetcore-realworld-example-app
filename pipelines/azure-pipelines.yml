@@ -5,6 +5,7 @@ trigger:
   paths:
     exclude:
     - k8s/*
+    - pipelines/*
 
 pr: none
 
